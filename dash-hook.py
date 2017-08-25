@@ -1,5 +1,6 @@
 from scapy.all import *
 import json
+import subprocess
 import atsumori
 
 
@@ -17,7 +18,6 @@ def loadMaclist():
 
 def arp_display(pkt):
     print("start dash hook")
-    atsumori.playAtsumori()
     macaddress = loadMaclist()
     if pkt[ARP].op == 1:
         # if pkt[ARP].psrc == '192.168.150.13':  # メモのIP

@@ -1,21 +1,29 @@
 import wave
 import pyaudio
 import time
-import os
-from PIL import Image
+import cv2
+import urllib
+import numpy as np
+import matplotlib.pyplot as plt
 # チャンク数を指定
 CHUNK = 1024
 
 
-def playAtsumori():
-    img = Image.open('src/atsumori.png')
+def downloadImage(url):
+    img_read = urllib.request.urlopen(url).read()  # URLよりバイナリストリームで画像取得
+    img_arr = np.fromstring(img_read, np.uint8)  # ストリームをnumpy arrayに変換
+    image = cv2.imdecode(img_arr, -1)
+    if image is None:
+        raise ValueError("'" + url + "'" +
+                         "はこのプログラムでは扱えないファイルです。このファイルはパスされます。")
+        return None
+    image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
+    return image
 
+
+def playAtsumori():
     wf = wave.open("src/atsumori.wav", "rb")
     p = pyaudio.PyAudio()
-    # 画像表示
-
-    img.show()
-
     # Streamを生成(3)
     stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
                     channels=wf.getnchannels(),
@@ -25,6 +33,10 @@ def playAtsumori():
     # Streamをつかって再生開始 (4)
     # 1024個読み取り
     data = wf.readframes(CHUNK)
+    img = downloadImage("https://pbs.twimg.com/media/C-VUJ58VYAAtZnV.jpg")
+    plt.imshow(img)
+    plt.show()
+    plt.close()
     while data != "b''":
         stream.write(data)
         data = wf.readframes(CHUNK)
@@ -33,9 +45,7 @@ def playAtsumori():
     stream.stop_stream()
     stream.close()
     wf.close()
-
     p.terminate()
-    img.close()
 
 
 if __name__ == "__main__":
