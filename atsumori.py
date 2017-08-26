@@ -37,7 +37,7 @@ def playAtsumori():
     plt.imshow(img)
     plt.show()
     plt.close()
-    while data != "b''":
+    while "''" not in str(data):
         stream.write(data)
         data = wf.readframes(CHUNK)
         print(data)
