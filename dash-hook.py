@@ -20,7 +20,6 @@ def arp_display(pkt):
     print("start dash hook")
     macaddress = loadMaclist()
     if pkt[ARP].op == 1:
-        # if pkt[ARP].psrc == '192.168.150.13':  # メモのIP
         for i in macaddress:
             if pkt[ARP].hwsrc == i:  # メモのMACアドレス
                 print("Pushed Button" + str(i))

@@ -1,10 +1,6 @@
 import wave
 import pyaudio
-import time
-import cv2
-import urllib
-import numpy as np
-import matplotlib.pyplot as plt
+import imageshow
 # チャンク数を指定
 CHUNK = 1024
 
@@ -22,7 +18,8 @@ def downloadImage(url):
 
 
 def playAtsumori():
-    wf = wave.open("src/atsumori.wav", "rb")
+    wf = wave.open("src/atsumori_short.wav", "rb")
+    img = "src/atsumori.png"
     p = pyaudio.PyAudio()
     # Streamを生成(3)
     stream = p.open(format=p.get_format_from_width(wf.getsampwidth()),
@@ -33,17 +30,14 @@ def playAtsumori():
     # Streamをつかって再生開始 (4)
     # 1024個読み取り
     data = wf.readframes(CHUNK)
-    img = downloadImage("https://pbs.twimg.com/media/C-VUJ58VYAAtZnV.jpg")
-    plt.imshow(img)
-    plt.show()
-    plt.close()
     while "''" not in str(data):
         stream.write(data)
         data = wf.readframes(CHUNK)
-        print(data)
     # 再生が終わると、ストリームを停止・解放 (6)
     stream.stop_stream()
     stream.close()
+    app = imageshow.showImageApp(img)
+    imageshow.exitApp(app)
     wf.close()
     p.terminate()
 
