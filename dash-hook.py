@@ -1,7 +1,8 @@
 from scapy.all import *
 import json
 import subprocess
-import atsumori
+import action
+import sys
 
 
 # ローカルのjsonファイル展開、返り値は辞書型
@@ -23,7 +24,7 @@ def arp_display(pkt):
         for i in macaddress:
             if pkt[ARP].hwsrc == i:  # メモのMACアドレス
                 print("Pushed Button" + str(i))
-                atsumori.playAtsumori()
+                action.action(str(i))
 
 
 print(sniff(prn=arp_display, filter="arp", store=0))
