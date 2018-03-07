@@ -1,7 +1,7 @@
 # amzn-dash-hack
 dash-buttonｗお
 
-## Please make _settings.json
+## Please make "_settings.json" in the working directly.
 
 ```json:_settings.json
 {
@@ -26,4 +26,11 @@ If you add macaddress, please write the address by reference to 👇
         ]
     }
 }
+```
+
+## Run dash-hook.py with sudo.
+
+
+```shellscript:shell.sh
+sudo python3 dash-hook.py
 ```
